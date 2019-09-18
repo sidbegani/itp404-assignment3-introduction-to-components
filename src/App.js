@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { getReddits } from './redditApi';
+import RedditCard from './RedditCard';
+import Loading from './loading';
+import RedditSubscribers from './RedditSubs.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+
+class App extends React.Component {
+  
+    constructor() {
+      super();
+      this.state = {
+        reddits: [],
+        loading: true
+      };
+    }
+
+
+    async componentDidMount(){
+   
+    let reddits = await getReddits('football');
+    this.setState({ reddits, loading:false });
+  }
+
+  render(){
+    return (
+      <div> 
+
+      {this.state.loading ? <Loading /> : <RedditSubscribers reddit={this.state.reddits[0]} />}
+     
+      <div>
+        {this.state.loading ? <Loading /> : this.state.reddits.map((reddit) => {
+         return <RedditCard reddit={reddit} key={reddit.data.title} />
+          })}
+      </div>
     </div>
-  );
+
+      );
+  }
 }
+
 
 export default App;
