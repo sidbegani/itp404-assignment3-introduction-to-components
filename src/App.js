@@ -31,7 +31,7 @@ class App extends React.Component {
       {this.state.loading ? <Loading /> : <RedditSubscribers reddit={this.state.reddits[0]} />}
      
       <div>
-        {this.state.loading ? <Loading /> : this.state.reddits.map((reddit) => {
+        {this.state.reddits.map((reddit) => {
          return <RedditCard reddit={reddit} key={reddit.data.title} />
           })}
       </div>
